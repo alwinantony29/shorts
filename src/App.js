@@ -8,7 +8,6 @@ import {
   CarouselPrevious,
 } from "./components/ui/carousel"
 function App() {
-  console.log({ videos })
   return (
     <div
       className="flex p-5 h-screen w-screen items-center justify-center bg-slate-700"
