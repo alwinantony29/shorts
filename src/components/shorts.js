@@ -7,7 +7,10 @@ import { Slider } from "../components/ui/slider";
 
 const Shorts = ({ src }) => {
     const [isPlaying, setIsPlaying] = useState(false);
+    const [isAudible, setIsAudible] = useState(true)
     const [currentTime, setCurrentTime] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+
     const videoRef = useRef(null);
 
     const handleTimeUpdate = () => {
@@ -24,8 +27,12 @@ const Shorts = ({ src }) => {
         if (!videoRef.current) return
         const video = videoRef.current;
         video.addEventListener('timeupdate', handleTimeUpdate);
+        video.addEventListener('waiting', () => setIsLoading(true));
+        video.addEventListener('canplaythrough', () => setIsLoading(false));
         return () => {
             video.removeEventListener('timeupdate', handleTimeUpdate);
+            video.addEventListener('waiting', () => setIsLoading(true));
+            video.addEventListener('canplaythrough', () => setIsLoading(false));
         };
     }, []);
 
@@ -38,6 +45,10 @@ const Shorts = ({ src }) => {
             e.target.pause();
         }
     };
+    const handleAudio = () => {
+        videoRef.current.muted = false;
+        setIsAudible(prev => !prev)
+    }
 
     return (
         <div>
@@ -52,7 +63,11 @@ const Shorts = ({ src }) => {
 
                 <div className='flex justify-between z-10 '>
                     {isPlaying ? <PauseIcon /> : <PlayIcon />}
-                    <IoMdVolumeHigh />
+                    <button onClick={handleAudio}>
+                        {isAudible ?
+                            <IoMdVolumeHigh />
+                            : <IoMdVolumeOff />}
+                    </button>
                 </div>
                 <div className='absolute h-[25%] z-10 gap-2 flex-col bottom-0'>
                     <div className='flex gap-3 items-center  font-semibold'>
@@ -64,7 +79,7 @@ const Shorts = ({ src }) => {
                             </span>
                         </button>
                     </div>
-                    <div className='flex items-center gap-3 w-full font-semibold'>
+                    <div className='flex items-center gap-2 w-full font-semibold'>
                         <MdOutlineArrowRight />
                         <p>MCU 4/32 - He is SUCCESSFUL in</p>
                     </div>
@@ -77,18 +92,9 @@ const Shorts = ({ src }) => {
                         value={[currentTime]}
                         onValueChange={handleSliderChange}
                         max={videoRef.current && videoRef.current.duration}
-                        className=' w-[98%] mx-auto' />
-                    {/* <div className='absolute left-0 text-red-600 bottom-0 px-[1%] w-full z-10'>
-                    <input
-                            type="range"
-                            className=' w-[98%] mx-auto'
-                            value={currentTime}
-                            min={0}
-                            max={videoRef.current && videoRef.current.duration}
-                            onChange={handleSliderChange}
-                            style={{ background: 'red' }}
-                        />
-                     </div>  */}
+                        className=' w-[98%] mx-auto'
+                        step={10}
+                    />
                 </div>
                 <div className='action-bar gap-5 items-center text-3xl flex-col-reverse flex absolute right-[-4rem] p-1 top-0 w-16 h-full'>
                     <button><BsThreeDotsVertical /></button>
