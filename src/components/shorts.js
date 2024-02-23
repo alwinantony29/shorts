@@ -8,16 +8,16 @@ import { Slider } from "../components/ui/slider";
 const Shorts = () => {
     return (
         <div className='w-[25%] max-w-[315px] h-[80svh] rounded-md flex flex-col relative bg-slate-300 p-2'>
-            <div className='flex justify-between '>
+            <div className='flex justify-between z-10 '>
                 <PlayIcon />
                 <IoMdVolumeHigh />
             </div>
-            <div className='absolute h-[25%]  gap-2 flex-col bottom-0'>
+            <div className='absolute h-[25%] z-10 gap-2 flex-col bottom-0'>
                 <div className='flex gap-3 items-center  font-semibold'>
                     <img className='h-9 w-9 rounded-full ' alt='profile pic' src='https://yt3.ggpht.com/yti/AGOGRCoiEx1X29gGYZQtGH3qoikIqIl5NqNa2hibMD8X2-4=s88-c-k-c0x00ffffff-no-rj' />
                     <p className='text-sm'>@EpicPopcornReviews</p>
                     <button className='rounded-2xl px-2 py-1 bg-white' >
-                        <span className='opacity-70'>
+                        <span className='opacity-80 text-sm'>
                             Subscribe
                         </span>
                     </button>
@@ -37,7 +37,7 @@ const Shorts = () => {
                 <button><BiSolidDislike /></button>
                 <button><BiSolidLike /></button>
             </div>
-            <div className='absolute left-0 bottom-0 px-[1%] w-full'>
+            <div className='absolute left-0 bottom-0 px-[1%] w-full z-10'>
             <Slider  className=' w-[98%] mx-auto'/>
             </div>
         </div>
