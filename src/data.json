@@ -1,6 +1,6 @@
 {
     "1": {
-        "src": "public/sample1.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708686863/sample1_pcmset.mp4",
         "channel": {
             "name": "Channel1",
             "image": ""
@@ -8,7 +8,7 @@
         "description": ""
     },
     "2": {
-        "src": "public/sample2.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708687721/sample2_jtc0ic.mp4",
         "channel": {
             "name": "Channel2",
             "image": ""
@@ -16,7 +16,7 @@
         "description": ""
     },
     "3": {
-        "src": "public/sample3.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708687713/sample3_s890kf.mp4",
         "channel": {
             "name": "Channel3",
             "image": ""
@@ -24,7 +24,7 @@
         "description": ""
     },
     "4": {
-        "src": "public/sample4.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708687723/sample4_vhwtum.mp4",
         "channel": {
             "name": "Channel4",
             "image": ""
