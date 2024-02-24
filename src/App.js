@@ -2,9 +2,16 @@ import Shorts from "./components/shorts";
 import videos from "./data.json";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
 import Slider from "react-slick";
 import { useEffect, useRef, useState } from "react";
+
+const sliderSettings = {
+  speed: 500,
+  vertical: true,
+  draggable: false,
+  arrows: false,
+};
+
 function App() {
   const sliderRef = useRef(null);
   const [currentShortsIndex, setCurrentShortsIndex] = useState(0);
@@ -26,13 +33,6 @@ function App() {
     };
   }, []);
 
-  const sliderSettings = {
-    speed: 500,
-    vertical: true,
-    draggable: false,
-    arrows:false,
-  };
-
   const handleBeforeChange = (oldIndex, newIndex) => {
     setCurrentShortsIndex(newIndex);
   };
@@ -43,7 +43,7 @@ function App() {
         {...sliderSettings}
         ref={sliderRef}
         beforeChange={handleBeforeChange}
-        className="w-full xs:w-[320px] md:w-[380px] h-full xs:h-[80vh] self-end"
+        className="w-full xs:w-[350px] md:w-[380px] h-full xs:h-[80vh] self-end"
       >
         {Object.values(videos).map((video, i) => {
           return (
@@ -51,6 +51,7 @@ function App() {
               <Shorts
                 {...video}
                 i={i}
+                key={i}
                 currentShortsIndex={currentShortsIndex}
               />
             </div>

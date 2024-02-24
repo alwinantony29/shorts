@@ -21,6 +21,7 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+
   const videoRef = useRef(null);
 
   const handleTimeUpdate = () => {
@@ -40,15 +41,14 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
 
   useEffect(() => {
     if (!videoRef.current) return;
-    if (currentShortsIndex === i) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    }
+    if (!currentShortsIndex === i) return;
+    videoRef.current.play();
+    setIsPlaying(true);
   }, [currentShortsIndex, i]);
 
   useEffect(() => {
-    if (!videoRef.current) return;
     const video = videoRef.current;
+    if (!video) return;
     video.addEventListener("timeupdate", handleTimeUpdate);
     document.addEventListener("keydown", handleKeyDown);
     return () => {
