@@ -1,85 +1,64 @@
 import Shorts from "./components/shorts";
 import videos from "./data.json";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./components/ui/carousel";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 import Slider from "react-slick";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 function App() {
   const sliderRef = useRef(null);
+  const [currentShortsIndex, setCurrentShortsIndex] = useState(0);
+
   const handleKeyDown = (event) => {
-    if (event.key === "ArrowUp") {
+    if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
       event.preventDefault();
       sliderRef.current.slickPrev();
-    } else if (event.key === "ArrowDown") {
-      event.preventDefault();
-      sliderRef.current.slickNext();
-    }
-    if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      sliderRef.current.slickPrev();
-    } else if (event.key === "ArrowRight") {
+    } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
       event.preventDefault();
       sliderRef.current.slickNext();
     }
   };
+
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-  const settings = {
-    // dots: true,
-    speed: 800,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+
+  const sliderSettings = {
+    speed: 700,
     vertical: true,
     swipe: true,
     draggable: false,
-    // arrows: false,
+    swipe: true, // Enable/disable swiping to change slides
   };
-  const handle = () => {
-    sliderRef.current.slickNext();
+
+  const handleBeforeChange = (oldIndex, newIndex) => {
+    setCurrentShortsIndex(newIndex);
   };
+
   return (
-    <div className="flex  h-screen w-screen items-center justify-center bg-slate-500">
+    <div className="flex overflow-hidden h-screen w-screen items-center justify-center bg-slate-500">
       <Slider
-        {...settings}
+        {...sliderSettings} 
         ref={sliderRef}
+        // lazyLoad="ondemand"// cloudinary doesn't support caching
+        beforeChange={handleBeforeChange}
         className="w-[350px] h-[80vh] self-end"
       >
-        {Object.values(videos).map((video) => {
+        {Object.values(videos).map((video, i) => {
           return (
             <div className="w-full h-[80vh]">
-              <Shorts {...video} />
+              <Shorts
+                {...video}
+                i={i}
+                currentShortsIndex={currentShortsIndex}
+              />
             </div>
           );
         })}
       </Slider>
-      {/* <Carousel
-        className="h-full md:h-auto w-full md:w-[350px] "
-        orientation="vertical"
-        loop
-      >
-        <CarouselContent className="w-full h-screen md:h-[85vh]">
-          {Object.values(videos).map((video, index) => {
-            return (
-              <CarouselItem key={index} className="w-full h-full">
-                <Shorts {...video} />
-              </CarouselItem>
-            );
-          })}
-        </CarouselContent>
-        <CarouselNext/>
-      </Carousel> */}
     </div>
   );
 }
