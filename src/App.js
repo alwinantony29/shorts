@@ -27,11 +27,10 @@ function App() {
   }, []);
 
   const sliderSettings = {
-    speed: 700,
+    speed: 500,
     vertical: true,
-    swipe: true,
     draggable: false,
-    swipe: true, // Enable/disable swiping to change slides
+    arrows:false,
   };
 
   const handleBeforeChange = (oldIndex, newIndex) => {
@@ -41,15 +40,14 @@ function App() {
   return (
     <div className="flex overflow-hidden h-screen w-screen items-center justify-center bg-slate-500">
       <Slider
-        {...sliderSettings} 
+        {...sliderSettings}
         ref={sliderRef}
-        // lazyLoad="ondemand"// cloudinary doesn't support caching
         beforeChange={handleBeforeChange}
-        className="w-[350px] h-[80vh] self-end"
+        className="w-full xs:w-[320px] md:w-[380px] h-full xs:h-[80vh] self-end"
       >
         {Object.values(videos).map((video, i) => {
           return (
-            <div className="w-full h-[80vh]">
+            <div className="w-full h-[100svh] xs:h-[80vh]">
               <Shorts
                 {...video}
                 i={i}

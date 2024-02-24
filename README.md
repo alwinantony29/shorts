@@ -1,4 +1,7 @@
-# shorts
+# Shorts
+- [Live demo](https://shorts-mu.vercel.app/)
+- Hosted with vercel
+- Made with create-react-app
 
 ## Setup
 

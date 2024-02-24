@@ -26,14 +26,17 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current.currentTime);
   };
-  const handleKeyDown=useCallback((event) =>{
-    // space-bar (key code 32)
-    if (!currentShortsIndex === i) return;
-    if (event.keyCode === 32) {
-      event.preventDefault();
-      handlePlayPause();
-    }
-  },[currentShortsIndex,i]) 
+  const handleKeyDown = useCallback(
+    (event) => {
+      // space-bar (key code 32)
+      if (!currentShortsIndex === i) return;
+      if (event.keyCode === 32) {
+        event.preventDefault();
+        handlePlayPause();
+      }
+    },
+    [currentShortsIndex, i]
+  );
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -41,7 +44,7 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
       videoRef.current.play();
       setIsPlaying(true);
     }
-  }, [currentShortsIndex,i]);
+  }, [currentShortsIndex, i]);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -52,7 +55,7 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
       video.removeEventListener("timeupdate", handleTimeUpdate);
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleKeyDown]); 
+  }, [handleKeyDown]);
 
   const handlePlayPause = () => {
     if (videoRef.current.paused) {
@@ -65,9 +68,9 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
   };
 
   return (
-    <div className="w-screen md:w-[80%] text-white h-screen md:h-full md:rounded-md flex flex-col relative p-2  ">
+    <div className="w-screen xs:w-full md:w-[80%] text-white h-screen xs:h-full xs:rounded-md flex flex-col relative p-2  ">
       <video
-        className="inset-0 object-cover absolute w-screen md:w-full h-screen md:h-full top-0 left-0 md:rounded-md"
+        className="inset-0 object-cover absolute w-screen xs:w-full h-screen xs:h-full top-0 left-0 xs:rounded-md"
         onClick={handlePlayPause}
         src={src}
         loop
@@ -81,10 +84,10 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
           {isAudible ? <IoMdVolumeHigh /> : <IoMdVolumeOff />}
         </button>
       </div>
-      <div className="absolute h-auto mb-2 z-10 gap-2 flex-col bottom-0 text-xs md:text-sm">
-        <div className="flex gap-2 flex-wrap items-center  font-semibold ">
+      <div className="flex absolute h-auto mb-2 z-10 gap-1 flex-wrap flex-col bottom-0 text-sm">
+        <div className="flex gap-2 items-center font-semibold ">
           <img
-            className="h-6 md:h-7 w-6 md:w-7 rounded-full "
+            className="h-8 w-8 flex rounded-full "
             alt="profile pic"
             src="https://yt3.ggpht.com/yti/AGOGRCoiEx1X29gGYZQtGH3qoikIqIl5NqNa2hibMD8X2-4=s88-c-k-c0x00ffffff-no-rj"
           />
