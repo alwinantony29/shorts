@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MdOutlineArrowRight } from "react-icons/md";
 import {
   IoIosShareAlt,
@@ -13,41 +13,55 @@ import {
   BiSolidCommentDetail,
 } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { Slider } from "../components/ui/slider";
-import { Button } from "./ui/button";
+import { Slider } from "../ui/slider";
 
-const Shorts = ({ src }) => {
+const Shorts = ({ src, i, currentShortsIndex }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isAudible, setIsAudible] = useState(true);
+  const [isAudible, setIsAudible] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [isDisliked, setIsDisliked] = useState(false);
   const videoRef = useRef(null);
 
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current.currentTime);
   };
+  const handleKeyDown=useCallback((event) =>{
+    // space-bar (key code 32)
+    if (!currentShortsIndex === i) return;
+    if (event.keyCode === 32) {
+      event.preventDefault();
+      handlePlayPause();
+    }
+  },[currentShortsIndex,i]) 
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (currentShortsIndex === i) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  }, [currentShortsIndex,i]);
 
   useEffect(() => {
     if (!videoRef.current) return;
     const video = videoRef.current;
     video.addEventListener("timeupdate", handleTimeUpdate);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       video.removeEventListener("timeupdate", handleTimeUpdate);
+      document.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [handleKeyDown]); 
 
-  const handlePlayPause = (e) => {
-    if (e.target.paused) {
+  const handlePlayPause = () => {
+    if (videoRef.current.paused) {
       setIsPlaying(true);
-      e.target.play();
+      videoRef.current.play();
     } else {
       setIsPlaying(false);
-      e.target.pause();
+      videoRef.current.pause();
     }
-  };
-  const handleAudio = () => {
-    videoRef.current.muted = false;
-    setIsAudible((prev) => !prev);
   };
 
   return (
@@ -58,11 +72,12 @@ const Shorts = ({ src }) => {
         src={src}
         loop
         ref={videoRef}
+        muted={!isAudible}
       />
 
       <div className="flex justify-between z-10 ">
         {isPlaying ? <PauseIcon /> : <PlayIcon />}
-        <button onClick={handleAudio}>
+        <button onClick={() => setIsAudible((prev) => !prev)}>
           {isAudible ? <IoMdVolumeHigh /> : <IoMdVolumeOff />}
         </button>
       </div>
@@ -101,7 +116,8 @@ const Shorts = ({ src }) => {
             "https://yt3.ggpht.com/yti/AGOGRCoiEx1X29gGYZQtGH3qoikIqIl5NqNa2hibMD8X2-4=s88-c-k-c0x00ffffff-no-rj"
           }
           className="h-9 w-9 rounded-md"
-        ></img>
+          alt="channel-icon"
+        />
         <button>
           <BsThreeDotsVertical className="md:bg-gray-100 md:bg-opacity-30 rounded-full p-1.5 h-11 w-11 " />
         </button>
@@ -111,8 +127,12 @@ const Shorts = ({ src }) => {
         <button>
           <BiSolidCommentDetail className="md:bg-gray-100 md:bg-opacity-30 rounded-full p-1.5 h-11 w-11 " />
         </button>
-        <button>
-          <BiSolidDislike className="md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5" />
+        <button onClick={() => setIsDisliked((prev) => !prev)}>
+          <BiSolidDislike
+            className={`md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 ${
+              isDisliked ? "text-blue-500" : ""
+            }`}
+          />
         </button>
         <button onClick={() => setIsLiked((prev) => !prev)}>
           <BiSolidLike
