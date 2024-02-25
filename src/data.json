@@ -14,7 +14,7 @@
             "name": "Channel2",
             "image": "https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_640.jpg"
         },
-        "totalLikes":112,
+        "totalLikes":12,
         "description": "Witness the adorable antics and playful frolics of our feline friends, guaranteed to bring a smile to your face."
     },
     "3": {
@@ -23,7 +23,7 @@
             "name": "Channel3",
             "image": "https://cdn.pixabay.com/photo/2016/11/08/05/26/woman-1807533_640.jpg"
         },
-        "totalLikes":256,
+        "totalLikes":56,
         "description": "Explore the mesmerizing sights and sounds of nature, from majestic mountains to tranquil streams."
     },
     "4": {
@@ -32,7 +32,7 @@
             "name": "Channel4",
             "image": "https://cdn.pixabay.com/photo/2016/11/08/05/20/sunset-1807524_640.jpg"
         },
-        "totalLikes":538,
+        "totalLikes":38,
         "description": "Immerse yourself in the soothing sounds of crashing waves and gentle sea breeze for ultimate relaxation."
     },
     "5": {
@@ -41,6 +41,7 @@
             "name": "Channel5",
             "image": "https://cdn.pixabay.com/photo/2017/02/07/16/47/kingfisher-2046453_640.jpg"
         },
+        "totalLikes":18,
         "description": "Only this video has audio, try turning on audio"
     }
 }
