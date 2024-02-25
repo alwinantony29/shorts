@@ -1,63 +1,51 @@
 import Shorts from "./components/shorts";
-import videos from "./data.json";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import Slider from "react-slick";
-import { useEffect, useRef, useState } from "react";
+import data from "./data.json";
+import { useRef, useState } from "react";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from "react-responsive-carousel";
 
-const sliderSettings = {
-  speed: 500,
-  vertical: true,
-  draggable: false,
-  arrows: false,
+const carouselSettings = {
+  axis: "vertical",
+  emulateTouch: true,
+  showArrows: false,
+  swipeable: true,
+  showThumbs: false,
+  showIndicators: false,
+  showStatus: false,
+  ariaLabel: "Shorts",
+  // infiniteLoop: true,
+  useKeyboardArrows: true,
 };
+const videos = Object.values(data);
 
 function App() {
   const sliderRef = useRef(null);
   const [currentShortsIndex, setCurrentShortsIndex] = useState(0);
 
-  const handleKeyDown = (event) => {
-    if (event.key === "ArrowUp" || event.key === "ArrowLeft") {
-      event.preventDefault();
-      sliderRef.current.slickPrev();
-    } else if (event.key === "ArrowDown" || event.key === "ArrowRight") {
-      event.preventDefault();
-      sliderRef.current.slickNext();
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  const handleBeforeChange = (oldIndex, newIndex) => {
+  const handleCarouselChange = (newIndex) => {
     setCurrentShortsIndex(newIndex);
   };
 
   return (
-    <div className="flex overflow-hidden h-screen w-screen items-center justify-center bg-slate-500">
-      <Slider
-        {...sliderSettings}
+    <div className="flex overflow-hidden h-[100svh] w-screen items-center justify-center bg-slate-500">
+      <Carousel
+        {...carouselSettings}
         ref={sliderRef}
-        beforeChange={handleBeforeChange}
-        className="w-full xs:w-[350px] md:w-[380px] h-full xs:h-[80vh] self-end"
+        onChange={handleCarouselChange}
+        className="w-full xs:w-[350px] md:w-[380px] h-full xs:h-[80svh] self-end"
       >
-        {Object.values(videos).map((video, i) => {
+        {videos.map((video, i) => {
           return (
-            <div className="w-full h-[100svh] xs:h-[80vh]">
+            <div className="w-full h-[100svh] xs:h-[80svh]" key={i}>
               <Shorts
                 {...video}
                 i={i}
-                key={i}
                 currentShortsIndex={currentShortsIndex}
               />
             </div>
           );
         })}
-      </Slider>
+      </Carousel>
     </div>
   );
 }
