@@ -2,7 +2,8 @@
 
 ## About
 The objective was to Build a single-page application that mimics the basic functionality of YouTube Shorts. This app should be responsive and work well on both mobile and desktop devices.
-For desktop i have cloned the Shorts UI except the navbar and sidebar
+For desktop i have cloned the Shorts UI except the navbar and sidebar.
+    <br/>
 For mobile devices i gave a full screen immersive view
 
 
@@ -17,6 +18,8 @@ For mobile devices i gave a full screen immersive view
 - Arrow key navigation for desktops
 - Audio controls
 - Play/pause via touch/click/space-bar
+- Video progress indicator
+- Auto play
 - Used tailwind-css for styling
 
 ## Setup
