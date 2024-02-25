@@ -19,15 +19,17 @@ const carouselSettings = {
 const videos = Object.values(data);
 
 function App() {
-  const sliderRef = useRef(null);
   const [currentShortsIndex, setCurrentShortsIndex] = useState(0);
+  const [isAudible, setIsAudible] = useState(false);
+  const sliderRef = useRef(null);
+
 
   const handleCarouselChange = (newIndex) => {
     setCurrentShortsIndex(newIndex);
   };
 
   return (
-    <div className="flex overflow-hidden h-[100svh] w-screen items-center justify-center bg-slate-500">
+    <div className="flex overflow-hidden h-[100svh] w-screen items-center justify-center bg-black">
       <Carousel
         {...carouselSettings}
         ref={sliderRef}
@@ -40,6 +42,8 @@ function App() {
               <Shorts
                 {...video}
                 i={i}
+                isAudible={isAudible}
+                setIsAudible={setIsAudible}
                 currentShortsIndex={currentShortsIndex}
               />
             </div>

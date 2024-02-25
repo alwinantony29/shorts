@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { MdOutlineArrowRight } from "react-icons/md";
 import {
   IoIosShareAlt,
   IoMdPlay as PlayIcon,
@@ -16,18 +15,29 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { Slider } from "../ui/slider";
 import { debounce } from "../../lib/utils";
 
-const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
+const Shorts = ({
+  channel,
+  src,
+  i,
+  currentShortsIndex,
+  description,
+  isAudible,
+  setIsAudible,
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isAudible, setIsAudible] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   const videoRef = useRef(null);
 
   const handlePlayPause = (action) => {
     try {
-      if (videoRef.current.paused || action === "play") {
+      if (
+        (action !== "pause" && videoRef.current.paused) ||
+        action === "play"
+      ) {
         videoRef.current.play();
         setIsPlaying(true);
       } else {
@@ -39,6 +49,20 @@ const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
     }
   };
   const debouncedHandlePlayPause = debounce(handlePlayPause, 300);
+
+  useEffect(() => {
+    try {
+      if (!videoRef.current) return;
+      if (currentShortsIndex === i) {
+        debouncedHandlePlayPause("play");
+      } else {
+        debouncedHandlePlayPause("pause");
+        videoRef.current.currentTime = 0;
+      }
+    } catch (e) {
+      console.log("video error");
+    } // eslint-disable-next-line
+  }, [currentShortsIndex, i]);
 
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current.currentTime);
@@ -57,20 +81,6 @@ const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
   );
 
   useEffect(() => {
-    try {
-      if (!videoRef.current) return;
-      if (currentShortsIndex === i) {
-        debouncedHandlePlayPause("play");
-      } else {
-        debouncedHandlePlayPause("pause");
-        videoRef.current.currentTime = 0;
-      }
-    } catch (e) {
-      console.log("video error");
-    } // eslint-disable-next-line
-  }, [currentShortsIndex, i]);
-
-  useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     video.addEventListener("timeupdate", handleTimeUpdate);
@@ -80,6 +90,15 @@ const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [handleKeyDown]);
+
+  const handleLike = () => {
+    if (isDisliked) setIsDisliked(false);
+    setIsLiked((prev) => !prev);
+  };
+  const handleDislike = () => {
+    if (isLiked) setIsLiked(false);
+    setIsDisliked((prev) => !prev);
+  };
 
   return (
     <div className="w-screen xs:w-full md:w-[80%] text-white h-[100svh] xs:h-full xs:rounded-md flex flex-col relative p-2  ">
@@ -93,11 +112,13 @@ const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
       />
 
       <div className="flex justify-between z-10 ">
-        {isPlaying ? (
-          <PauseIcon className="h-6 w-6" />
-        ) : (
-          <PlayIcon className="h-6 w-6" />
-        )}
+        <button onClick={handlePlayPause}>
+          {isPlaying ? (
+            <PauseIcon className="h-6 w-6" />
+          ) : (
+            <PlayIcon className="h-6 w-6" />
+          )}
+        </button>
         <button onClick={() => setIsAudible((prev) => !prev)}>
           {isAudible ? (
             <IoMdVolumeHigh className="h-6 w-6" />
@@ -117,18 +138,17 @@ const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
             }
           />
           <p>{channel.name || "@EpicPopcornReviews"}</p>
-          <button className="rounded-2xl px-2 py-0.5 bg-white">
-            <span className="opacity-80 text-black">Subscribe</span>
+          <button
+            onClick={() => setIsSubscribed((prev) => !prev)}
+            className="rounded-2xl px-2 py-0.5 bg-white"
+          >
+            <span className="opacity-80 text-black">
+              {isSubscribed ? "Subscribed" : "Subscribe"}
+            </span>
           </button>
         </div>
-        <div className="flex items-center gap-2 w-full font-semibold">
-          <MdOutlineArrowRight />
-          <p>{"MCU 4/32 - He is SUCCESSFUL in"}</p>
-        </div>
-        <div className="flex w-full font-semibold h-10 text-wrap max-w-[80%] ">
-          <p className="whitespace-normal truncate">
-            {description || ""}
-          </p>
+        <div className="flex w-[80%] xs:w-full font-semibold h-28 xs:h-10 text-wrap max-w-[80%] ">
+          <p className="whitespace-normal truncate">{description || ""}</p>
         </div>
       </div>
       <div className="absolute left-0 bottom-0 px-[1%] w-full z-20">
@@ -158,14 +178,14 @@ const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
         <button>
           <BiSolidCommentDetail className="md:bg-gray-100 md:bg-opacity-30 rounded-full p-1.5 h-11 w-11 " />
         </button>
-        <button onClick={() => setIsDisliked((prev) => !prev)}>
+        <button onClick={handleDislike}>
           <BiSolidDislike
             className={`md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 ${
               isDisliked ? "text-blue-400" : ""
             }`}
           />
         </button>
-        <button onClick={() => setIsLiked((prev) => !prev)}>
+        <button onClick={handleLike}>
           <BiSolidLike
             className={`${
               isLiked ? "text-blue-400" : ""

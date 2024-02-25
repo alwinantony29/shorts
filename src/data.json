@@ -5,7 +5,7 @@
             "name": "Channel1",
             "image": "https://cdn.pixabay.com/photo/2012/06/19/10/32/owl-50267_640.jpg"
         },
-        "description": "Experience the grace and elegance of birds soaring through the sky, capturing the beauty of flight in stunning detai"
+        "description": "Experience the grace and elegance of birds soaring through the sky, capturing the beauty of flight in stunning detail."
     },
     "2": {
         "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708847395/sample5_eyv44r.mp4",
@@ -31,12 +31,12 @@
         },
         "description": "Immerse yourself in the soothing sounds of crashing waves and gentle sea breeze for ultimate relaxation."
     },
-    "5":{
-        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708848265/sample7_kpsxer.mp4",
+    "5": {
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708851377/reedumqlhj0w4vixkw5m.mp4",
         "channel": {
-            "name": "Channel4",
-            "image": "https://cdn.pixabay.com/photo/2016/11/08/05/20/sunset-1807524_640.jpg"
+            "name": "Channel5",
+            "image": "https://cdn.pixabay.com/photo/2017/02/07/16/47/kingfisher-2046453_640.jpg"
         },
-        "description": "Immerse yourself in the soothing sounds of crashing waves and gentle sea breeze for ultimate relaxation."
+        "description": "Only this video has audio, try turning on audio"
     }
 }
