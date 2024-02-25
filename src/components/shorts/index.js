@@ -1,19 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
-  IoIosShareAlt,
   IoMdPlay as PlayIcon,
   IoMdPause as PauseIcon,
   IoMdVolumeHigh,
   IoMdVolumeOff,
 } from "react-icons/io";
-import {
-  BiSolidLike,
-  BiSolidDislike,
-  BiSolidCommentDetail,
-} from "react-icons/bi";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { Slider } from "../ui/slider";
 import { debounce } from "../../lib/utils";
+import ActionBar from "./ActionBar";
 
 const Shorts = ({
   channel,
@@ -27,29 +21,29 @@ const Shorts = ({
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [isLiked, setIsLiked] = useState(false);
-  const [isDisliked, setIsDisliked] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
-  const [likeCount, setLikeCount] = useState(totalLikes);
 
   const videoRef = useRef(null);
 
-  const handlePlayPause = (action) => {
-    try {
-      if (
-        (action !== "pause" && videoRef.current.paused) ||
-        action === "play"
-      ) {
-        videoRef.current.play();
-        setIsPlaying(true);
-      } else {
-        videoRef.current.pause();
-        setIsPlaying(false);
+  const handlePlayPause = useCallback(
+    (action) => {
+      try {
+        if (
+          (action !== "pause" && videoRef.current.paused) ||
+          action === "play"
+        ) {
+          videoRef.current.play();
+          setIsPlaying(true);
+        } else {
+          videoRef.current.pause();
+          setIsPlaying(false);
+        }
+      } catch (e) {
+        console.log("video play error");
       }
-    } catch (e) {
-      console.log("video play error");
-    }
-  };
+    },
+    [videoRef]
+  );
   const debouncedHandlePlayPause = debounce(handlePlayPause, 300);
 
   useEffect(() => {
@@ -93,20 +87,6 @@ const Shorts = ({
     };
   }, [handleKeyDown]);
 
-  const handleLike = () => {
-    if (isDisliked) setIsDisliked(false);
-    if (isLiked) setLikeCount((prev) => prev - 1);
-    else setLikeCount((prev) => prev + 1);
-    setIsLiked((prev) => !prev);
-  };
-  const handleDislike = () => {
-    if (isLiked) {
-      setLikeCount((prev) => prev - 1);
-      setIsLiked(false);
-    }
-    setIsDisliked((prev) => !prev);
-  };
-
   return (
     <div className="w-screen xs:w-full md:w-[80%] text-white h-[100svh] xs:h-full xs:rounded-md flex flex-col relative p-3 xs:p-2  ">
       <video
@@ -117,7 +97,6 @@ const Shorts = ({
         ref={videoRef}
         muted={!isAudible}
       />
-
       <div className="flex justify-between z-10 ">
         <button onClick={handlePlayPause}>
           {isPlaying ? (
@@ -167,42 +146,7 @@ const Shorts = ({
           step={10}
         />
       </div>
-      <div className="gap-5 items-center text-3xl flex-col-reverse flex absolute right-0 md:right-[-4rem] p-1 pb-2 bottom-0 w-16  h-screen md:h-full">
-        <img
-          src={
-            channel.image ||
-            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-          }
-          className="h-9 !w-9 rounded-md"
-          alt="channel-icon"
-        />
-        <button>
-          <BsThreeDotsVertical className="md:bg-gray-100 md:bg-opacity-30 rounded-full p-1.5 h-11 w-11 " />
-        </button>
-        <button>
-          <IoIosShareAlt className="md:bg-gray-100 md:bg-opacity-30 rounded-full p-1.5 h-11 w-11 " />
-        </button>
-        <button>
-          <BiSolidCommentDetail className="md:bg-gray-100 md:bg-opacity-30 rounded-full p-1.5 h-11 w-11 " />
-        </button>
-        <button onClick={handleDislike}>
-          <BiSolidDislike
-            className={`md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 ${
-              isDisliked ? "text-blue-400" : ""
-            }`}
-          />
-        </button>
-        <button onClick={handleLike} className="relative">
-          <BiSolidLike
-            className={`${
-              isLiked ? "text-blue-400" : ""
-            } md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5  `}
-          />
-          <p className="text-sm absolute bottom-0 left-0 ml-[.8rem] mb-[-1.2rem]">
-            {likeCount}
-          </p>
-        </button>
-      </div>
+      <ActionBar totalLikes={totalLikes} channel={channel} />
     </div>
   );
 };
