@@ -108,7 +108,7 @@ const Shorts = ({
   };
 
   return (
-    <div className="w-screen xs:w-full md:w-[80%] text-white h-[100svh] xs:h-full xs:rounded-md flex flex-col relative p-2  ">
+    <div className="w-screen xs:w-full md:w-[80%] text-white h-[100svh] xs:h-full xs:rounded-md flex flex-col relative p-3 xs:p-2  ">
       <video
         className="inset-0 object-cover absolute w-screen xs:w-full h-[100svh] xs:h-full top-0 left-0 xs:rounded-md"
         onClick={debouncedHandlePlayPause}
