@@ -1,34 +1,42 @@
 {
     "1": {
-        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708686863/sample1_pcmset.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708847006/pexels-anna-tarazevich-7008042_720p_pxxsns.mp4",
         "channel": {
             "name": "Channel1",
-            "image": ""
+            "image": "https://cdn.pixabay.com/photo/2012/06/19/10/32/owl-50267_640.jpg"
         },
-        "description": ""
+        "description": "Experience the grace and elegance of birds soaring through the sky, capturing the beauty of flight in stunning detai"
     },
     "2": {
-        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708687721/sample2_jtc0ic.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708847395/sample5_eyv44r.mp4",
         "channel": {
             "name": "Channel2",
-            "image": ""
+            "image": "https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_640.jpg"
         },
-        "description": ""
+        "description": "Witness the adorable antics and playful frolics of our feline friends, guaranteed to bring a smile to your face."
     },
     "3": {
-        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708687713/sample3_s890kf.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708848108/sample6_ussaow.mp4",
         "channel": {
             "name": "Channel3",
-            "image": ""
+            "image": "https://cdn.pixabay.com/photo/2016/11/08/05/26/woman-1807533_640.jpg"
         },
-        "description": ""
+        "description": "Explore the mesmerizing sights and sounds of nature, from majestic mountains to tranquil streams."
     },
     "4": {
-        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708687723/sample4_vhwtum.mp4",
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708848265/sample7_kpsxer.mp4",
         "channel": {
             "name": "Channel4",
-            "image": ""
+            "image": "https://cdn.pixabay.com/photo/2016/11/08/05/20/sunset-1807524_640.jpg"
         },
-        "description": ""
+        "description": "Immerse yourself in the soothing sounds of crashing waves and gentle sea breeze for ultimate relaxation."
+    },
+    "5":{
+        "src": "https://res.cloudinary.com/ddh0reqyx/video/upload/v1708848265/sample7_kpsxer.mp4",
+        "channel": {
+            "name": "Channel4",
+            "image": "https://cdn.pixabay.com/photo/2016/11/08/05/20/sunset-1807524_640.jpg"
+        },
+        "description": "Immerse yourself in the soothing sounds of crashing waves and gentle sea breeze for ultimate relaxation."
     }
 }
