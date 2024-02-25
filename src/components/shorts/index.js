@@ -14,8 +14,9 @@ import {
 } from "react-icons/bi";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Slider } from "../ui/slider";
+import { debounce } from "../../lib/utils";
 
-const Shorts = ({ src, i, currentShortsIndex }) => {
+const Shorts = ({ channel, src, i, currentShortsIndex, description }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAudible, setIsAudible] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -24,26 +25,49 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
 
   const videoRef = useRef(null);
 
+  const handlePlayPause = (action) => {
+    try {
+      if (videoRef.current.paused || action === "play") {
+        videoRef.current.play();
+        setIsPlaying(true);
+      } else {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      }
+    } catch (e) {
+      console.log("video play error");
+    }
+  };
+  const debouncedHandlePlayPause = debounce(handlePlayPause, 300);
+
   const handleTimeUpdate = () => {
     setCurrentTime(videoRef.current.currentTime);
   };
+
   const handleKeyDown = useCallback(
     (event) => {
       // space-bar (key code 32)
-      if (!currentShortsIndex === i) return;
+      if (currentShortsIndex !== i) return;
       if (event.keyCode === 32) {
         event.preventDefault();
         handlePlayPause();
       }
     },
-    [currentShortsIndex, i]
+    [currentShortsIndex, i, handlePlayPause]
   );
 
   useEffect(() => {
-    if (!videoRef.current) return;
-    if (!currentShortsIndex === i) return;
-    videoRef.current.play();
-    setIsPlaying(true);
+    try {
+      if (!videoRef.current) return;
+      if (currentShortsIndex === i) {
+        debouncedHandlePlayPause("play");
+      } else {
+        debouncedHandlePlayPause("pause");
+        videoRef.current.currentTime = 0;
+      }
+    } catch (e) {
+      console.log("video error");
+    } // eslint-disable-next-line
   }, [currentShortsIndex, i]);
 
   useEffect(() => {
@@ -57,51 +81,54 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
     };
   }, [handleKeyDown]);
 
-  const handlePlayPause = () => {
-    if (videoRef.current.paused) {
-      setIsPlaying(true);
-      videoRef.current.play();
-    } else {
-      setIsPlaying(false);
-      videoRef.current.pause();
-    }
-  };
-
   return (
-    <div className="w-screen xs:w-full md:w-[80%] text-white h-screen xs:h-full xs:rounded-md flex flex-col relative p-2  ">
+    <div className="w-screen xs:w-full md:w-[80%] text-white h-[100svh] xs:h-full xs:rounded-md flex flex-col relative p-2  ">
       <video
-        className="inset-0 object-cover absolute w-screen xs:w-full h-screen xs:h-full top-0 left-0 xs:rounded-md"
-        onClick={handlePlayPause}
+        className="inset-0 object-cover absolute w-screen xs:w-full h-[100svh] xs:h-full top-0 left-0 xs:rounded-md"
+        onClick={debouncedHandlePlayPause}
         src={src}
-        loop
+        loop={isPlaying}
         ref={videoRef}
         muted={!isAudible}
       />
 
       <div className="flex justify-between z-10 ">
-        {isPlaying ? <PauseIcon /> : <PlayIcon />}
+        {isPlaying ? (
+          <PauseIcon className="h-6 w-6" />
+        ) : (
+          <PlayIcon className="h-6 w-6" />
+        )}
         <button onClick={() => setIsAudible((prev) => !prev)}>
-          {isAudible ? <IoMdVolumeHigh /> : <IoMdVolumeOff />}
+          {isAudible ? (
+            <IoMdVolumeHigh className="h-6 w-6" />
+          ) : (
+            <IoMdVolumeOff className="h-6 w-6" />
+          )}
         </button>
       </div>
-      <div className="flex absolute h-auto mb-2 z-10 gap-1 flex-wrap flex-col bottom-0 text-sm">
+      <div className="flex text-pretty text-start absolute h-auto mb-2 z-10 gap-1 flex-wrap flex-col bottom-0 text-lg xs:text-sm">
         <div className="flex gap-2 items-center font-semibold ">
           <img
-            className="h-8 w-8 flex rounded-full "
+            className="h-8 !w-8 flex rounded-full "
             alt="profile pic"
-            src="https://yt3.ggpht.com/yti/AGOGRCoiEx1X29gGYZQtGH3qoikIqIl5NqNa2hibMD8X2-4=s88-c-k-c0x00ffffff-no-rj"
+            src={
+              channel.image ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+            }
           />
-          <p>@EpicPopcornReviews</p>
+          <p>{channel.name || "@EpicPopcornReviews"}</p>
           <button className="rounded-2xl px-2 py-0.5 bg-white">
             <span className="opacity-80 text-black">Subscribe</span>
           </button>
         </div>
         <div className="flex items-center gap-2 w-full font-semibold">
           <MdOutlineArrowRight />
-          <p>MCU 4/32 - He is SUCCESSFUL in</p>
+          <p>{"MCU 4/32 - He is SUCCESSFUL in"}</p>
         </div>
-        <div className="flex w-full font-semibold text-wrap max-w-[80%] ">
-          <p>World PEACE #ironman2 #movie #featuremovie #film #mcu</p>
+        <div className="flex w-full font-semibold h-10 text-wrap max-w-[80%] ">
+          <p className="whitespace-normal truncate">
+            {description || ""}
+          </p>
         </div>
       </div>
       <div className="absolute left-0 bottom-0 px-[1%] w-full z-20">
@@ -113,12 +140,13 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
           step={10}
         />
       </div>
-      <div className="action-bar gap-5 items-center text-3xl flex-col-reverse flex absolute right-0 md:right-[-4rem] p-1 bottom-0 w-16  h-screen md:h-full">
+      <div className="gap-5 items-center text-3xl flex-col-reverse flex absolute right-0 md:right-[-4rem] p-1 pb-2 bottom-0 w-16  h-screen md:h-full">
         <img
           src={
-            "https://yt3.ggpht.com/yti/AGOGRCoiEx1X29gGYZQtGH3qoikIqIl5NqNa2hibMD8X2-4=s88-c-k-c0x00ffffff-no-rj"
+            channel.image ||
+            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
           }
-          className="h-9 w-9 rounded-md"
+          className="h-9 !w-9 rounded-md"
           alt="channel-icon"
         />
         <button>
@@ -133,15 +161,15 @@ const Shorts = ({ src, i, currentShortsIndex }) => {
         <button onClick={() => setIsDisliked((prev) => !prev)}>
           <BiSolidDislike
             className={`md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 ${
-              isDisliked ? "text-blue-500" : ""
+              isDisliked ? "text-blue-400" : ""
             }`}
           />
         </button>
         <button onClick={() => setIsLiked((prev) => !prev)}>
           <BiSolidLike
             className={`${
-              isLiked ? "text-blue-600" : ""
-            } md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5   `}
+              isLiked ? "text-blue-400" : ""
+            } md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 `}
           />
         </button>
       </div>
