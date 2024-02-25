@@ -147,7 +147,7 @@ const Shorts = ({
           <p>{channel.name || ""}</p>
           <button
             onClick={() => setIsSubscribed((prev) => !prev)}
-            className="rounded-2xl px-3 w-28 py-0.5 bg-white"
+            className="rounded-2xl px-3 w-28 md:w-24 py-0.5 bg-white"
           >
             <span className="opacity-80 text-black">
               {isSubscribed ? "Subscribed" : "Subscribe"}
@@ -192,13 +192,15 @@ const Shorts = ({
             }`}
           />
         </button>
-        <button onClick={handleLike}>
+        <button onClick={handleLike} className="relative">
           <BiSolidLike
             className={`${
               isLiked ? "text-blue-400" : ""
-            } md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 `}
+            } md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5  `}
           />
-          <p className="text-sm">{likeCount}</p>
+          <p className="text-sm absolute bottom-0 left-0 ml-[.8rem] mb-[-1.2rem]">
+            {likeCount}
+          </p>
         </button>
       </div>
     </div>
