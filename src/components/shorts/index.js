@@ -140,15 +140,15 @@ const Shorts = ({
           <p>{channel.name || "@EpicPopcornReviews"}</p>
           <button
             onClick={() => setIsSubscribed((prev) => !prev)}
-            className="rounded-2xl px-2 py-0.5 bg-white"
+            className="rounded-2xl px-3 w-28 py-0.5 bg-white"
           >
             <span className="opacity-80 text-black">
               {isSubscribed ? "Subscribed" : "Subscribe"}
             </span>
           </button>
         </div>
-        <div className="flex w-[80%] xs:w-full font-semibold h-28 xs:h-10 text-wrap max-w-[80%] ">
-          <p className="whitespace-normal truncate">{description || ""}</p>
+        <div className="flex w-[80%] xs:w-full font-semibold h-20 xs:h-10 text-wrap">
+          <p className="truncate whitespace-normal">{description || ""}</p>
         </div>
       </div>
       <div className="absolute left-0 bottom-0 px-[1%] w-full z-20">
