@@ -20,15 +20,17 @@ const Shorts = ({
   src,
   i,
   currentShortsIndex,
-  description,
+  description = "",
   isAudible,
   setIsAudible,
+  totalLikes = 0,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [isDisliked, setIsDisliked] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [likeCount, setLikeCount] = useState(totalLikes);
 
   const videoRef = useRef(null);
 
@@ -93,10 +95,15 @@ const Shorts = ({
 
   const handleLike = () => {
     if (isDisliked) setIsDisliked(false);
+    if (isLiked) setLikeCount((prev) => prev - 1);
+    else setLikeCount((prev) => prev + 1);
     setIsLiked((prev) => !prev);
   };
   const handleDislike = () => {
-    if (isLiked) setIsLiked(false);
+    if (isLiked) {
+      setLikeCount((prev) => prev - 1);
+      setIsLiked(false);
+    }
     setIsDisliked((prev) => !prev);
   };
 
@@ -137,7 +144,7 @@ const Shorts = ({
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
             }
           />
-          <p>{channel.name || "@EpicPopcornReviews"}</p>
+          <p>{channel.name || ""}</p>
           <button
             onClick={() => setIsSubscribed((prev) => !prev)}
             className="rounded-2xl px-3 w-28 py-0.5 bg-white"
@@ -147,8 +154,8 @@ const Shorts = ({
             </span>
           </button>
         </div>
-        <div className="flex w-[80%] xs:w-full font-semibold h-20 xs:h-10 text-wrap">
-          <p className="truncate whitespace-normal">{description || ""}</p>
+        <div className="w-[80%] md:w-full font-semibold h-auto text-wrap">
+          <p>{description || ""}</p>
         </div>
       </div>
       <div className="absolute left-0 bottom-0 px-[1%] w-full z-20">
@@ -191,6 +198,7 @@ const Shorts = ({
               isLiked ? "text-blue-400" : ""
             } md:bg-gray-100 md:bg-opacity-30 rounded-full h-11 w-11 p-1.5 `}
           />
+          <p className="text-sm">{likeCount}</p>
         </button>
       </div>
     </div>

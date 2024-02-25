@@ -5,6 +5,7 @@
             "name": "Channel1",
             "image": "https://cdn.pixabay.com/photo/2012/06/19/10/32/owl-50267_640.jpg"
         },
+        "totalLikes":46,
         "description": "Experience the grace and elegance of birds soaring through the sky, capturing the beauty of flight in stunning detail."
     },
     "2": {
@@ -13,6 +14,7 @@
             "name": "Channel2",
             "image": "https://cdn.pixabay.com/photo/2016/11/14/04/45/elephant-1822636_640.jpg"
         },
+        "totalLikes":112,
         "description": "Witness the adorable antics and playful frolics of our feline friends, guaranteed to bring a smile to your face."
     },
     "3": {
@@ -21,6 +23,7 @@
             "name": "Channel3",
             "image": "https://cdn.pixabay.com/photo/2016/11/08/05/26/woman-1807533_640.jpg"
         },
+        "totalLikes":256,
         "description": "Explore the mesmerizing sights and sounds of nature, from majestic mountains to tranquil streams."
     },
     "4": {
@@ -29,6 +32,7 @@
             "name": "Channel4",
             "image": "https://cdn.pixabay.com/photo/2016/11/08/05/20/sunset-1807524_640.jpg"
         },
+        "totalLikes":538,
         "description": "Immerse yourself in the soothing sounds of crashing waves and gentle sea breeze for ultimate relaxation."
     },
     "5": {
